@@ -1,0 +1,88 @@
+@{
+    ViewData["Page"] = "Electrical Appliances";
+}
+
+@model ElectricalApplianceModel
+
+<div class="container">
+    <h2 class="mt-4">My Electrical Appliances</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Quantity</th>
+            <th>Power (W)</th>
+            <th>Usage per day (Hours)</th>
+            @if (ViewBag.LoggedUser.UserId == Model.ElectricalAppliances.FirstOrDefault()?.UserId)
+            {
+                <th>Action</th>
+            }
+        </thead>
+        <tbody>
+            @foreach (ElectricalAppliance electricalAppliance in Model.ElectricalAppliances)
+            {
+                <tr>
+                    <td>@electricalAppliance.Category</td>
+                    <td>@electricalAppliance.Brand</td>
+                    <td>@electricalAppliance.Quantity</td>
+                    <td>@electricalAppliance.Power</td>
+                    <td>@electricalAppliance.UsagePerDay</td>
+
+                    @if (ViewBag.LoggedUser.UserId == electricalAppliance.UserId)
+                    {
+                        <td>
+                            <a href="/electricalAppliances/Edit/@electricalAppliance.Id" class="btn btn-warning">Edit</a>
+                            <form 
+                                asp-action="DeleteElectricalAppliance" 
+                                asp-controller="ElectricalAppliance" 
+                                asp-route-id="@electricalAppliance.Id" 
+                                method="post" 
+                                style="display:inline;">
+                                <input type="submit" value="Delete" class="btn btn-danger" />
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3 class="mt-5">Add a New Electrical Appliance</h3>
+    <form asp-action="CreateElectricalAppliance" asp-controller="ElectricalAppliance" method="post">
+        
+        <div class="mb-3">
+            <label asp-for="NewElectricalAppliance.Category" class="form-label">Category</label>
+            <input asp-for="NewElectricalAppliance.Category" class="form-control">
+            <span asp-validation-for="NewElectricalAppliance.Category" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewElectricalAppliance.Brand" class="form-label">Brand</label>
+            <input asp-for="NewElectricalAppliance.Brand" class="form-control">
+            <span asp-validation-for="NewElectricalAppliance.Brand" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewElectricalAppliance.Quantity" class="form-label">Quantity</label>
+            <input asp-for="NewElectricalAppliance.Quantity" type="number" class="form-control">
+            <span asp-validation-for="NewElectricalAppliance.Quantity" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewElectricalAppliance.Power" class="form-label">Power (W)</label>
+            <input asp-for="NewElectricalAppliance.Power" type="number" class="form-control">
+            <span asp-validation-for="NewElectricalAppliance.Power" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewElectricalAppliance.UsagePerDay" class="form-label">Usage per day (Hours)</label>
+            <input asp-for="NewElectricalAppliance.UsagePerDay" type="number" step="0.1" class="form-control">
+            <span asp-validation-for="NewElectricalAppliance.UsagePerDay" class="text-danger"></span>
+        </div>
+
+        <div>
+            <input type="submit" value="Add Appliance" class="btn btn-primary">
+        </div>
+    </form>
+</div>

@@ -72,7 +72,7 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpGet("logout")]
+    
     [HttpPost("logout")]
     public IActionResult Logout()
     {
